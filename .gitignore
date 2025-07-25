@@ -1,0 +1,73 @@
+secrets.json
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyd
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# 환경 파일 및 시크릿 파일
+.env
+.env.*
+secrets.json
+config.json
+settings_dev.json
+settings_prod.json
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 가상환경 폴더
+venv/
+env/
+ENV/
+.venv/
+
+# Pipenv / Poetry
+Pipfile.lock
+poetry.lock
+
+# Migrations (단, __init__.py는 유지)
+**/migrations/*.py
+**/migrations/*.pyc
+!*/migrations/__init__.py
+
+# Coverage reports & 테스트 캐시
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+
+# 타입 검사 도구
+.mypy_cache/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Gunicorn
+gunicorn.pid
+
+# JWT 토큰
+*.jwt
+
+# Docker
+*.pid
+*.pid.lock
