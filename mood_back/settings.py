@@ -1,19 +1,23 @@
 from pathlib import Path
-import json
+import json, os
 from django.core.exceptions import ImproperlyConfigured
 from datetime import timedelta
 
-with open('secrets.json') as f:
-    secrets = json.loads(f.read())
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = f"Set the {setting} environment variable"
-        raise ImproperlyConfigured(error_msg)
+if not SECRET_KEY:
+    raise ImproperlyConfigured("SECRET_KEY 환경변수가 설정되지 않았어요!")
+# with open('secrets.json') as f:
+#     secrets = json.loads(f.read())
 
-SECRET_KEY = get_secret('SECRET_KEY')
+# def get_secret(setting, secrets=secrets):
+#     try:
+#         return secrets[setting]
+#     except KeyError:
+#         error_msg = f"Set the {setting} environment variable"
+#         raise ImproperlyConfigured(error_msg)
+
+# SECRET_KEY = get_secret('SECRET_KEY')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,9 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'Users.CustomUser'
 
@@ -158,6 +162,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
