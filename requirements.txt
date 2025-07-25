@@ -9,8 +9,10 @@ Django==5.2
 django-allauth==65.7.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
+gunicorn==23.0.0
 idna==3.10
 oauthlib==3.2.2
+packaging==25.0
 pillow==11.2.1
 pycparser==2.22
 PyJWT==2.9.0
