@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -66,7 +66,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.kakao.KakaoOAuth2',
+    # 'social_core.backends.kakao.KakaoOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
