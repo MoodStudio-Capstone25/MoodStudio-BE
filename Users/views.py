@@ -3,6 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.http import HttpResponseRedirect
+from django.views import View
+
 
 User = get_user_model()
 
@@ -60,3 +63,10 @@ class KakaoLoginAPIView(APIView):
                 "cabinet_public": user.cabinet_public
             }
         })
+
+class KakaoRedirectView(View):
+    def get(self, request):
+        code = request.GET.get("code")
+        if not code:
+            return HttpResponseRedirect("moodstudio://redirect?error=missing_code")
+        return HttpResponseRedirect(f"moodstudio://redirect?code={code}")
