@@ -68,5 +68,6 @@ class KakaoRedirectView(View):
     def get(self, request):
         code = request.GET.get("code")
         if not code:
-            return HttpResponseRedirect("moodstudio://redirect?error=missing_code")
-        return HttpResponseRedirect(f"moodstudio://redirect?code={code}")
+            return HttpResponseRedirect("https://moodstudio-be.onrender.com?error=missing_code")
+        return HttpResponseRedirect(f"https://moodstudio-be.onrender.com?code={code}")
+
