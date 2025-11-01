@@ -3,6 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework.response import Response
+from rest_framework import status
 from django.http import HttpResponseRedirect
 from django.views import View
 
@@ -68,6 +71,26 @@ class KakaoRedirectView(View):
     def get(self, request):
         code = request.GET.get("code")
         if not code:
-            return HttpResponseRedirect("https://moodstudio-be.onrender.com?error=missing_code")
-        return HttpResponseRedirect(f"https://moodstudio-be.onrender.com?code={code}")
+            # 인가 코드가 없을 때 앱으로 에러 리다이렉트
+            return HttpResponseRedirect("moodstudio://redirect?error=missing_code")
 
+        # 인가 코드가 있을 때 앱으로 코드 전달
+        return HttpResponseRedirect(f"moodstudio://redirect?code={code}")
+    
+class CustomTokenRefreshView(TokenRefreshView):
+    """
+    refresh_token으로 access_token 재발급 API
+    """
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return Response({"error": "Invalid or expired refresh token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({
+            "access": serializer.validated_data["access"],
+            "refresh": request.data.get("refresh"),  # 기존 리프레시 유지
+            "message": "Access token refreshed successfully"
+        })
