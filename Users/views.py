@@ -4,13 +4,16 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
-from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpResponseRedirect
 from django.views import View
 
-
 User = get_user_model()
+
+# ✅ moodstudio:// 스킴 허용을 위한 커스텀 Redirect 클래스
+class AppSchemeRedirect(HttpResponseRedirect):
+    allowed_schemes = list(HttpResponseRedirect.allowed_schemes) + ['moodstudio']
+
 
 class KakaoLoginAPIView(APIView):
     def post(self, request):
@@ -47,7 +50,7 @@ class KakaoLoginAPIView(APIView):
                     "cabinet_public": True
                 }
             )
-            # 4️⃣ kakao_id가 없는 경우에만 저장 (중복 방지)
+            # 4️⃣ kakao_id 저장
             if not user.kakao_id:
                 user.kakao_id = kakao_id
                 user.save()
@@ -67,16 +70,19 @@ class KakaoLoginAPIView(APIView):
             }
         })
 
+
 class KakaoRedirectView(View):
     def get(self, request):
         code = request.GET.get("code")
-        if not code:
-            # 인가 코드가 없을 때 앱으로 에러 리다이렉트
-            return HttpResponseRedirect("moodstudio://redirect?error=missing_code")
 
-        # 인가 코드가 있을 때 앱으로 코드 전달
-        return HttpResponseRedirect(f"moodstudio://redirect?code={code}")
-    
+        if not code:
+            # 인가 코드 없음 → 앱으로 에러 전달
+            return AppSchemeRedirect("moodstudio://redirect?error=missing_code")
+
+        # 인가 코드 있음 → 앱으로 전달
+        return AppSchemeRedirect(f"moodstudio://redirect?code={code}")
+
+
 class CustomTokenRefreshView(TokenRefreshView):
     """
     refresh_token으로 access_token 재발급 API
@@ -86,11 +92,11 @@ class CustomTokenRefreshView(TokenRefreshView):
 
         try:
             serializer.is_valid(raise_exception=True)
-        except Exception as e:
+        except Exception:
             return Response({"error": "Invalid or expired refresh token"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({
             "access": serializer.validated_data["access"],
-            "refresh": request.data.get("refresh"),  # 기존 리프레시 유지
+            "refresh": request.data.get("refresh"),
             "message": "Access token refreshed successfully"
         })
