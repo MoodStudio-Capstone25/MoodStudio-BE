@@ -42,11 +42,6 @@ ENV/
 Pipfile.lock
 poetry.lock
 
-# Migrations (단, __init__.py는 유지)
-**/migrations/*.py
-**/migrations/*.pyc
-!*/migrations/__init__.py
-
 # Coverage reports & 테스트 캐시
 htmlcov/
 .coverage
