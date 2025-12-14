@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 class Record(models.Model):
-    TEMPLATE_CHOICES = (('content', 'Content'),)
+    TEMPLATE_CHOICES = (('baisc', 'culture','content'),)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='records')
     template = models.CharField(max_length=50, choices=TEMPLATE_CHOICES, null=True, blank=True)
     category = models.CharField(max_length=100, null=True, blank=True)
