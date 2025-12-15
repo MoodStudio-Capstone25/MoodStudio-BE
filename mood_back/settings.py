@@ -116,30 +116,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mood_back.wsgi.application'
 
 ROOT_URLCONF = 'mood_back.urls'
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-# 환경 구분 (local / production)
-DJANGO_ENV = os.environ.get('DJANGO_ENV', 'local')
+DJANGO_ENV = os.environ.get('DJANGO_ENV', 'local')  # 👈 기본값은 local
 
 if DJANGO_ENV == 'production':
-    # Render에서 사용할 설정 (Persistent Disk)
+    # ✅ Render에서 사용할 DB (Persistent Disk)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': '/var/data/db.sqlite3',   # ✅ Disk에 저장
+            'NAME': '/var/media/db.sqlite3',
         }
     }
 else:
-    # 로컬 개발용 (지금 쓰던 그대로)
+    # ✅ 로컬 개발용
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
