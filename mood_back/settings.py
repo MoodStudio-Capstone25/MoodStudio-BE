@@ -125,12 +125,27 @@ ROOT_URLCONF = 'mood_back.urls'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/opt/render/project/src/db/db.sqlite3',
+
+
+# 환경 구분 (local / production)
+DJANGO_ENV = os.environ.get('DJANGO_ENV', 'local')
+
+if DJANGO_ENV == 'production':
+    # Render에서 사용할 설정 (Persistent Disk)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/var/data/db.sqlite3',   # ✅ Disk에 저장
+        }
     }
-}
+else:
+    # 로컬 개발용 (지금 쓰던 그대로)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -177,4 +192,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = Path('/var/media')  # Render Disk mount path랑 똑같이
+
+if DJANGO_ENV == 'production':
+    MEDIA_ROOT = Path('/var/data/media')   # ✅ Disk 안에 media 폴더
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
