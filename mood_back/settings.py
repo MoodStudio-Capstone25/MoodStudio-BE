@@ -125,13 +125,13 @@ ROOT_URLCONF = 'mood_back.urls'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/var/media/db.sqlite3',  # 같은 Disk 안으로 이동
+        'NAME': '/opt/render/project/src/db/db.sqlite3',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
