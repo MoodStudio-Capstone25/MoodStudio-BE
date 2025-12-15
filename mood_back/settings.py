@@ -194,6 +194,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 
 if DJANGO_ENV == 'production':
-    MEDIA_ROOT = Path('/var/data/media')   # ✅ Disk 안에 media 폴더
+    MEDIA_ROOT = Path('/var/media')   # ✅ Disk 안에 media 폴더
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
