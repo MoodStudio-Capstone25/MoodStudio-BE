@@ -30,14 +30,14 @@ class RecordImageUploadSerializer(serializers.ModelSerializer):
         fields = ['id', 'record', 'image']
 
 class AngleSerializer(serializers.Serializer):
-    x = serializers.IntegerField()
-    y = serializers.IntegerField()
-    z = serializers.IntegerField()
+    x = serializers.FloatField()
+    y = serializers.FloatField()
+    z = serializers.FloatField()
 
 class PositionSerializer(serializers.Serializer):
-    x = serializers.IntegerField()
-    y = serializers.IntegerField()
-    z = serializers.IntegerField()
+    x = serializers.FloatField()
+    y = serializers.FloatField()
+    z = serializers.FloatField()
 
 class ElementSerializer(serializers.ModelSerializer):
     record = serializers.IntegerField(write_only=True)
